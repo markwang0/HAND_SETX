@@ -1,0 +1,16 @@
+.DS_Store
+
+full_mosaic*/*
+12*/
+12*
+archive/
+AustinExerciseModules*/
+done*/
+mosaic*/*
+
+*.zip
+
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints

@@ -1,0 +1,11 @@
+name: hand-austin-exercises
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - geopandas
+  - numpy
+  - pandas
+  - rasterio
+  - matplotlib
+  - ipykernel
