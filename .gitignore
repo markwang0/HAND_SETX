@@ -10,6 +10,7 @@ mosaic*/*
 inun_launcher.sh
 
 *.zip
+*.csv
 
 __pycache__/
 *.py[cod]
