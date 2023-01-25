@@ -20,11 +20,11 @@ if "10m" in os.getcwd():
     # project from EPSG:4269 (NAD83) to EPSG:5070 (NAD83 / Conus Albers)
     catch_df = catch_df.to_crs("EPSG:5070")
 
-    # before running script, project HAND raster to EPSG:5070
+    # before running script, project bufferred HAND raster to EPSG:5070
     # for example with nodata and compression options:
     # gdalwarp -dstnodata -9999 -co "COMPRESS=LZW" -t_srs EPSG:5070 \
-    #           120402hand.tif 120402hand_proj.tif
-    hand_raster_fpath = glob("*hand_proj.tif")[0]
+    #           120402dd.tif 120402dd_proj.tif
+    hand_raster_fpath = glob("*dd_proj.tif")[0]
     src_hand = rio.open(hand_raster_fpath)
 
     in_meta = src_hand.meta
