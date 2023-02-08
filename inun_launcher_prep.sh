@@ -2,7 +2,7 @@
 
 # get event identifier of run with -e flag
 # e.g. ./inun_launcher_prep.sh -e harvey
-while getopts n: flag; do
+while getopts e: flag; do
     case "${flag}" in
         e) event=${OPTARG};;
     esac
