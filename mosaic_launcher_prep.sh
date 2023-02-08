@@ -18,7 +18,7 @@ for D in 3m/12*; do
 -srcnodata -9999 \
 -co \"COMPRESS=LZW\" \
 ${D}/inundation/${event}/inun_*.tif \
-$mosaic_dir/${event}_mosaic_${D:3:-1}.tif" >> mosaic_launcher.sh
+$mosaic_dir/${event}_mosaic_${D:3}.tif" >> mosaic_launcher.sh
         done
     fi
 done
