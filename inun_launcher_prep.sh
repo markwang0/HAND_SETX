@@ -1,29 +1,24 @@
 #!/bin/bash
 
-# get name identifier of run with -n flag
-# e.g. ./inun_launcher_prep.sh -n harvey
-# if none given use date and time
+# get event identifier of run with -e flag
+# e.g. ./inun_launcher_prep.sh -e harvey
 while getopts n: flag; do
     case "${flag}" in
-        n) name=${OPTARG};;
+        e) event=${OPTARG};;
     esac
 done
 
-if (( $OPTIND == 1 )); then
-    name=$(date +%Y%m%d-%H%M%S)
-fi
-
-echo "Identifier: $name"
+echo "Event: $event"
 
 # create file of launcher commands
 # make subdirectories for inundation .tif files
-if [ -f inun_launcher.sh ]; then
-    rm inun_launcher.sh
+if [ -f inun_launcher_${event}.sh ]; then
+    rm inun_launcher_${event}.sh
 fi
 
 for D in 3m/12*; do
     if [ -d "${D}" ]; then
-        mkdir -p ${D}/inundation/${name}
-        echo "python calc_inun.py \"${D}\" \"${name}\"" >> inun_launcher.sh
+        mkdir -p ${D}/inundation/${event}
+        echo "python calc_inun.py \"${D}\" \"${event}\"" >> inun_launcher_${event}.sh
     fi
 done
