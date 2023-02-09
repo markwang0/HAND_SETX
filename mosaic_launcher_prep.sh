@@ -35,6 +35,7 @@ for event in ${events[@]}; do
     echo "gdalwarp -dstnodata -9999 \
 -srcnodata -9999 \
 -co \"COMPRESS=LZW\" \
+-co \"BIGTIFF=YES\" \
 $mosaic_dir/${event}_mosaic_*.tif \
 $mosaic_dir/${event}_full_mosaic.tif" >> full_mosaic_launcher.sh
 done
