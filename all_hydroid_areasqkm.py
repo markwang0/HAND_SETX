@@ -32,4 +32,4 @@ pd.concat(
         )
         for p in catch_paths
     ]
-).to_csv("./all_hydroid_areasqkm.csv", index=False)
+).to_csv("./done/all_hydroid_areasqkm.csv", index=False)
