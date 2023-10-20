@@ -3,48 +3,48 @@ import os
 import sys
 import pandas as pd
 
-events = ["harvey", "ike", "imelda"]
-# event = "harvey"
+# events = ["harvey", "ike", "imelda"]
+events = ["ike"]
+
 
 for event in events:
-
-    # flowrates for a storm in SETX. feature_id and FATSGTID
+    # NWM flowrates for a given event
     df = pd.read_csv(
-        f"./done/{event}_max_setx_FATSGTID.csv",
-        usecols=["FATSGTID", "streamflow"],
+        f"./{event}_max_conus.csv",
+        usecols=["feature_id", "streamflow"],
     )
-
-    df.index = df["FATSGTID"]
-    df.drop(columns="FATSGTID", inplace=True)
 
     # read in master synthetic rating curves csv
     hydrotable = pd.read_csv(
-        "./done/hydroTable_all_ID_stage_Q.csv",
-        usecols=["FATSGTID", "feature_id", "stage", "discharge_cms"],
+        "./hydroTable_all_ID_stage_Q.csv",
+        usecols=["CatchId", "Stage", "Discharge (m3s-1)"],
     )
-    hydrotable.index = hydrotable["FATSGTID"]
-    hydrotable.drop(columns="FATSGTID", inplace=True)
+
+    # keep only those HydroIDs present in hydrotable AOI (feature_id == CatchId)
+    df = df[df["feature_id"].isin(hydrotable["CatchId"])]
+
+    # reset indexing to simplify subsetting rating tables
+    df.index = df["feature_id"]
+    df.drop(columns="feature_id", inplace=True)
+    hydrotable.index = hydrotable["CatchId"]
+    hydrotable.drop(columns="CatchId", inplace=True)
 
     # interpolate stage from streamflows with synthetic rating table
-    event_df = pd.DataFrame()
-    event_df.index = df.index
-    event_df["Q_cms"] = df["streamflow"]
-    event_df["stage_m"] = np.nan
+    df["stage_m"] = np.nan
 
-    for hydroid in event_df.index:
-        # HydroID = FATSGTID
-        # for each HydroID, subset hydrotable.csv
-        # to get the HydroID specific rating table
-        # and interpolate stage from discharge
+    for hydroid in df.index:
+        # HydroID = CatchId or feature_id
+        # for each HydroID, subset hydrotable to get the HydroID
+        # specific rating table and interpolate stage from discharge
         stage = np.interp(
-            event_df.loc[hydroid, "Q_cms"],
-            hydrotable.loc[hydroid, "discharge_cms"],
-            hydrotable.loc[hydroid, "stage"],
+            df.loc[hydroid, "streamflow"],
+            hydrotable.loc[hydroid, "Discharge (m3s-1)"],
+            hydrotable.loc[hydroid, "Stage"],
         )
-        event_df.loc[hydroid, "stage_m"] = stage
+        df.loc[hydroid, "stage_m"] = stage
 
-    event_df.to_csv(
-        f"./done/{event}_stage.csv",
+    df.to_csv(
+        f"./{event}_stage.csv",
     )
 
-    del event_df
+    del df

@@ -1,18 +1,10 @@
 .DS_Store
-
-full_mosaic*/*
-12*/
-12*
-10m*
-3m*
-archive/
-AustinExerciseModules*/
-done*/
-mosaic*/*
-inun_launcher.sh
+inundation*
+cropped_hand*
 
 *.zip
 *.csv
+*.geojson
 
 __pycache__/
 *.py[cod]

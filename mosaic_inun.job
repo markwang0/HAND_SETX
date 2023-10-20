@@ -1,0 +1,27 @@
+#!/bin/bash
+#SBATCH -J inun_mosaic                    # Job name
+#SBATCH -o inun_mosaic.%j                  # Name of stdout output file
+#SBATCH -e inun_mosaic.%j                  # Name of stderr error file
+#SBATCH -p normal                          # Queue (partition) name
+#SBATCH -N 1                                # Total # of nodes
+#SBATCH -n 1                               # Total # of mpi tasks
+#SBATCH -t 06:00:00                         # Run time (hh:mm:ss)
+#SBATCH --mail-type=all                     # Send email at begin and end of job
+#SBATCH -A EAR23005                     # Project/Allocation name
+#SBATCH --mail-user=mark.wang@utexas.edu
+
+date
+eval "$(micromamba shell hook --shell bash)"
+micromamba activate gis-env
+# mosaic inundation maps and crop to study area
+gdalwarp \
+    -dstnodata -9999 \
+    -srcnodata -9999 \
+    -co COMPRESS=LZW \
+    -co BIGTIFF=YES \
+    -cutline catch_con_hull_15N_buf_500m.geojson \
+    -cl catch_con_hull_15N_buf_500m \
+    -crop_to_cutline \
+    inundation_multi/*.tif \
+    ike_inun_mosaic.tif
+date
