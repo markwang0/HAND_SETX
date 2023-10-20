@@ -5,6 +5,7 @@ cropped_hand*
 *.zip
 *.csv
 *.geojson
+*.tif
 
 __pycache__/
 *.py[cod]
